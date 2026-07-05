@@ -6,18 +6,9 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { HeroVideoBackground } from '@/components/jorgo/hero-video-background'
 
-const SLIDE_INTERVAL = 4000
+const SLIDE_INTERVAL = 3000
 
 const SLIDES = [
-  {
-    id: 'ski',
-    video:
-      'https://videos.pexels.com/video-files/855528/855528-hd_1920_1080_25fps.mp4',
-    poster:
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=1920&q=80',
-    title: 'Горнолыжные туры',
-    subtitle: 'Заснеженные склоны и горные трассы с опытными гидами',
-  },
   {
     id: 'trekking',
     video:
