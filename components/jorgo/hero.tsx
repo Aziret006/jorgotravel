@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { HeroVideoBackground } from '@/components/jorgo/hero-video-background'
 
-const SLIDE_INTERVAL = 2000
+const SLIDE_INTERVAL = 4000
 
 const SLIDES = [
   {
@@ -90,11 +90,7 @@ export function Hero() {
         </div>
 
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/55 to-navy/20"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_80%,rgba(27,174,130,0.18),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10"
           aria-hidden="true"
         />
       </div>
@@ -152,8 +148,8 @@ export function Hero() {
       <div className="relative z-20 flex min-h-svh w-full flex-col justify-end px-4 pb-12 pt-28 sm:px-8 md:px-12 md:pb-16 lg:px-16">
         <div className="mx-auto w-full max-w-7xl">
           <div key={active} className="hero-content-fade">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
-              <MapPin className="size-4 text-primary" aria-hidden="true" />
+            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+              <MapPin className="size-4 text-accent" aria-hidden="true" />
               Кыргызстан — страна свободы и гор
             </p>
 
@@ -205,7 +201,7 @@ export function Hero() {
         <div
           key={`progress-${active}`}
           className={cn(
-            'h-full bg-gradient-to-r from-primary to-accent hero-slide-progress',
+            'h-full bg-accent hero-slide-progress',
             paused && 'paused',
           )}
         />
