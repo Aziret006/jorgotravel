@@ -35,11 +35,16 @@ export function SiteHeader() {
     setOpen(false)
   }, [pathname])
 
+  const isHome = pathname === '/'
+
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 bg-header-gradient transition-shadow duration-500',
-        scrolled && 'shadow-lg',
+        'fixed inset-x-0 top-0 z-50 transition-all duration-500',
+        isHome && !scrolled
+          ? 'border-b border-white/10 bg-black/15 backdrop-blur-md'
+          : 'bg-header-gradient',
+        scrolled && 'border-b border-white/5 bg-header-gradient shadow-lg shadow-black/20',
       )}
     >
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-3 px-4 md:h-20 md:gap-6 md:px-6">

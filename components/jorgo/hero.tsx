@@ -2,12 +2,18 @@
 
 import { cn } from '@/lib/utils'
 import { JORGO_HERO_SLIDES } from '@/lib/jorgo-media'
-import { ChevronDown, MapPin, Star } from 'lucide-react'
+import { ArrowRight, ChevronDown, MapPin, Star, Users, Award } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
 const SLIDE_INTERVAL = 4000
 
 const SLIDES = JORGO_HERO_SLIDES
+
+const STATS = [
+  { icon: Star, value: '4.9', label: 'рейтинг туристов' },
+  { icon: Users, value: '500+', label: 'путешественников' },
+  { icon: Award, value: '10+', label: 'лет опыта' },
+]
 
 export function Hero() {
   const [active, setActive] = useState(0)
@@ -34,39 +40,51 @@ export function Hero() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      {/* Background slides — crossfade */}
       <div className="absolute inset-0 size-full">
-        <div
-          className="flex h-full w-full transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${active * 100}%)` }}
-        >
-          {SLIDES.map((item, i) => (
-            <div key={item.id} className="relative h-full w-full shrink-0">
-              <img
-                src={item.image}
-                alt={item.alt}
-                className={cn(
-                  'absolute inset-0 size-full object-cover object-center',
-                  i === active && 'animate-ken-burns',
-                )}
-                fetchPriority={i === 0 ? 'high' : 'low'}
-                loading={i === 0 ? 'eager' : 'lazy'}
-              />
-            </div>
-          ))}
-        </div>
+        {SLIDES.map((item, i) => (
+          <div
+            key={item.id}
+            className={cn(
+              'absolute inset-0 transition-opacity duration-1000 ease-in-out',
+              i === active ? 'opacity-100' : 'opacity-0',
+            )}
+            aria-hidden={i !== active}
+          >
+            <img
+              src={item.image}
+              alt={item.alt}
+              className={cn(
+                'size-full object-cover object-center',
+                i === active && 'animate-ken-burns',
+              )}
+              fetchPriority={i === 0 ? 'high' : 'low'}
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        ))}
 
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/25 to-transparent"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-black/10"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_30%,transparent_0%,rgba(0,0,0,0.35)_100%)]"
           aria-hidden="true"
         />
       </div>
 
-      <div
-        className="absolute left-4 top-1/2 z-30 hidden -translate-y-1/2 sm:left-6 sm:block md:left-8"
-        role="tablist"
-        aria-label="Слайды hero"
-      >
-        <div className="flex flex-col items-center gap-3 rounded-full border border-white/15 bg-white/10 px-2.5 py-4 backdrop-blur-md">
+      {/* Slide nav — desktop */}
+      <div className="absolute bottom-32 left-4 z-30 hidden flex-col gap-4 sm:left-8 md:bottom-auto md:left-10 md:top-1/2 md:-translate-y-1/2 lg:left-14">
+        <div
+          className="flex flex-col gap-2 rounded-2xl border border-white/15 bg-black/25 p-3 backdrop-blur-xl"
+          role="tablist"
+          aria-label="Слайды hero"
+        >
           {SLIDES.map((item, i) => (
             <button
               key={item.id}
@@ -75,14 +93,31 @@ export function Hero() {
               aria-selected={i === active}
               aria-label={`Слайд ${i + 1}: ${item.title}`}
               onClick={() => goTo(i)}
-              className="group relative flex items-center justify-center p-0.5"
+              className={cn(
+                'group flex items-center gap-3 rounded-xl px-3 py-2 text-left transition-all duration-300',
+                i === active ? 'bg-white/15' : 'hover:bg-white/10',
+              )}
             >
               <span
                 className={cn(
-                  'block rounded-full transition-all duration-500 ease-out',
-                  i === active
-                    ? 'h-8 w-2 bg-accent shadow-[0_0_12px_rgba(232,82,10,0.6)]'
-                    : 'size-2 bg-white/35 group-hover:bg-white/60',
+                  'font-heading text-xs font-bold tabular-nums transition-colors',
+                  i === active ? 'text-accent' : 'text-white/40',
+                )}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span
+                className={cn(
+                  'hidden max-w-[120px] truncate text-xs font-medium transition-colors lg:block',
+                  i === active ? 'text-white' : 'text-white/50 group-hover:text-white/80',
+                )}
+              >
+                {item.title}
+              </span>
+              <span
+                className={cn(
+                  'ml-auto h-1 rounded-full transition-all duration-500',
+                  i === active ? 'w-8 bg-accent' : 'w-3 bg-white/25',
                 )}
               />
             </button>
@@ -90,8 +125,9 @@ export function Hero() {
         </div>
       </div>
 
+      {/* Mobile dots */}
       <div
-        className="absolute bottom-24 left-1/2 z-30 flex -translate-x-1/2 gap-2 sm:hidden"
+        className="absolute bottom-28 left-1/2 z-30 flex -translate-x-1/2 gap-2 md:hidden"
         role="tablist"
         aria-label="Слайды hero"
       >
@@ -105,69 +141,89 @@ export function Hero() {
             onClick={() => goTo(i)}
             className={cn(
               'rounded-full transition-all duration-500',
-              i === active ? 'h-2 w-6 bg-accent' : 'size-2 bg-white/40',
+              i === active ? 'h-2 w-7 bg-accent shadow-[0_0_10px_rgba(232,82,10,0.5)]' : 'size-2 bg-white/40',
             )}
           />
         ))}
       </div>
 
-      <div className="relative z-20 flex min-h-svh w-full flex-col justify-end px-4 pb-12 pt-28 sm:px-8 md:px-12 md:pb-16 lg:px-16">
-        <div className="mx-auto w-full max-w-7xl">
-          <div key={active} className="hero-content-fade">
-            <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
-              <MapPin className="size-4 text-accent" aria-hidden="true" />
+      {/* Content */}
+      <div className="relative z-20 flex min-h-svh w-full flex-col justify-end px-4 pb-14 pt-28 sm:px-8 md:px-12 md:pb-20 lg:px-16">
+        <div className="mx-auto w-full max-w-7xl md:pl-44 lg:pl-52">
+          <div key={active} className="hero-content-fade max-w-3xl">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-4 py-2 text-sm font-medium text-white/95 shadow-lg backdrop-blur-md">
+              <span className="flex size-6 items-center justify-center rounded-full bg-accent/90">
+                <MapPin className="size-3.5 text-white" aria-hidden="true" />
+              </span>
               Кыргызстан — страна свободы и гор
             </p>
 
-            <div className="flex items-end gap-4">
-              <h1 className="max-w-3xl text-balance font-heading text-4xl font-bold leading-tight text-white drop-shadow-lg sm:text-5xl md:text-6xl lg:text-7xl">
-                {slide.title}
-              </h1>
-              <span className="mb-2 hidden shrink-0 font-heading text-sm font-semibold tracking-widest text-white/40 sm:block">
-                {String(active + 1).padStart(2, '0')}
-                <span className="mx-1 text-white/25">/</span>
-                {String(SLIDES.length).padStart(2, '0')}
-              </span>
+            <div className="flex items-start justify-between gap-6">
+              <div>
+                <h1 className="text-balance font-heading text-4xl font-bold leading-[1.08] tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.5)] sm:text-5xl md:text-6xl lg:text-[4.25rem]">
+                  {slide.title}
+                </h1>
+                <span className="mt-3 block h-1 w-16 rounded-full bg-accent shadow-[0_0_16px_rgba(232,82,10,0.5)]" />
+              </div>
+              <div className="hidden shrink-0 flex-col items-end pt-2 sm:flex">
+                <span className="font-heading text-3xl font-bold tabular-nums text-white/90 md:text-4xl">
+                  {String(active + 1).padStart(2, '0')}
+                </span>
+                <span className="text-xs font-medium uppercase tracking-[0.2em] text-white/35">
+                  / {String(SLIDES.length).padStart(2, '0')}
+                </span>
+              </div>
             </div>
 
-            <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-white/90 sm:text-lg md:text-xl">
+            <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-white/85 sm:text-lg md:text-xl md:leading-relaxed">
               {slide.subtitle}
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+            <div className="mt-9 flex flex-wrap gap-3 sm:gap-4">
               <a
                 href="#tours"
-                className="inline-flex items-center justify-center rounded-full bg-accent px-8 py-3.5 text-base font-bold uppercase tracking-wide text-accent-foreground shadow-lg shadow-accent/25 transition-all duration-300 hover:scale-[1.04] hover:shadow-xl hover:shadow-accent/35"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-3.5 text-sm font-bold uppercase tracking-wider text-accent-foreground shadow-[0_8px_32px_rgba(232,82,10,0.35)] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_12px_40px_rgba(232,82,10,0.45)] sm:text-base"
               >
                 Подробнее
+                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/10 px-8 py-3.5 text-base font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/50 hover:bg-white/20"
+                className="inline-flex items-center justify-center rounded-full border border-white/35 bg-white/10 px-8 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-white/60 hover:bg-white/20 sm:text-base"
               >
                 Свяжитесь с нами
               </a>
             </div>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-sm text-white/85 backdrop-blur-sm sm:gap-x-8 sm:px-6">
-            <span className="inline-flex items-center gap-1.5">
-              <Star className="size-4 fill-accent text-accent" aria-hidden="true" />
-              4.9 из 5 — рейтинг туристов
-            </span>
-            <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
-            <span>500+ довольных путешественников</span>
-            <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
-            <span>10+ лет опыта</span>
+          <div className="mt-12 grid gap-3 sm:grid-cols-3 md:max-w-3xl">
+            {STATS.map((stat) => {
+              const Icon = stat.icon
+              return (
+                <div
+                  key={stat.label}
+                  className="flex items-center gap-3 rounded-2xl border border-white/15 bg-black/30 px-4 py-3.5 backdrop-blur-md transition-colors duration-300 hover:border-white/25 hover:bg-black/40"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                    <Icon className="size-4 fill-accent/20" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="font-heading text-lg font-bold leading-none text-white">{stat.value}</p>
+                    <p className="mt-0.5 text-xs text-white/60">{stat.label}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-30 h-0.5 bg-white/15">
+      {/* Progress */}
+      <div className="absolute inset-x-0 bottom-0 z-30 h-[3px] bg-white/10">
         <div
           key={`progress-${active}`}
           className={cn(
-            'h-full bg-accent hero-slide-progress',
+            'h-full bg-gradient-to-r from-accent/80 via-accent to-accent/90 hero-slide-progress shadow-[0_0_12px_rgba(232,82,10,0.6)]',
             paused && 'paused',
           )}
         />
@@ -176,7 +232,7 @@ export function Hero() {
       <a
         href="#formats"
         aria-label="Прокрутить вниз"
-        className="absolute bottom-8 left-1/2 z-30 flex size-10 -translate-x-1/2 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white/80 backdrop-blur-sm transition-all duration-300 hover:border-accent hover:text-accent"
+        className="absolute bottom-10 right-6 z-30 hidden size-11 items-center justify-center rounded-full border border-white/25 bg-black/30 text-white/80 backdrop-blur-md transition-all duration-300 hover:border-accent hover:text-accent md:flex lg:right-10"
       >
         <ChevronDown className="size-5 animate-bounce" aria-hidden="true" />
       </a>
