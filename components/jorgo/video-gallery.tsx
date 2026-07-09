@@ -1,32 +1,7 @@
 'use client'
 
 import { Reveal } from '@/components/jorgo/reveal'
-import { YouTubeEmbed } from '@/components/jorgo/youtube-embed'
-
-const YOUTUBE_ID = '6v2L2UGZJAM'
-
-const GALLERY = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80',
-    caption: 'Рассвет на Сон-Куле',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=600&q=80',
-    caption: 'Иссык-Куль на закате',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=600&q=80',
-    caption: 'Треккинг в горах',
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
-    caption: 'Каньон Кёль-Суу',
-  },
-]
+import { JORGO_EASTERN, JORGO_GALLERY } from '@/lib/jorgo-media'
 
 export function VideoGallery() {
   return (
@@ -45,21 +20,27 @@ export function VideoGallery() {
             Посмотрите, как проходят наши туры
           </h2>
           <p className="mt-4 text-pretty text-navy-foreground/70">
-            Горы, озёра и живые эмоции путешественников — в одном ролике.
+            Реальные фото с маршрута «Восточный тур» — 9 локаций за 3 дня.
           </p>
         </Reveal>
 
         <Reveal className="mt-12">
           <div className="relative mx-auto aspect-video max-w-4xl overflow-hidden rounded-3xl border border-white/10 shadow-2xl">
-            <YouTubeEmbed
-              videoId={YOUTUBE_ID}
-              title="Видео о турах JorgoTravel по Кыргызстану"
+            <img
+              src={JORGO_EASTERN.skazka}
+              alt="Каньон Сказка — Восточный тур JorgoTravel"
+              className="size-full object-cover"
+              loading="lazy"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent" />
+            <p className="absolute bottom-6 left-6 font-heading text-2xl font-bold text-white md:text-3xl">
+              Каньон Сказка
+            </p>
           </div>
         </Reveal>
 
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {GALLERY.map((item, i) => (
+          {JORGO_GALLERY.map((item, i) => (
             <Reveal key={item.caption} delay={i * 90} className="group">
               <figure className="overflow-hidden rounded-2xl border border-white/10">
                 <div className="aspect-square overflow-hidden">

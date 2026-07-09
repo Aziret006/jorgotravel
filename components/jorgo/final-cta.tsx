@@ -1,9 +1,7 @@
 import { Mail, MessageCircle, Phone, Send } from 'lucide-react'
 
 import { Reveal } from '@/components/jorgo/reveal'
-import { YouTubeBackground } from '@/components/jorgo/youtube-embed'
-
-const YOUTUBE_ID = '6v2L2UGZJAM'
+import { JORGO_EASTERN } from '@/lib/jorgo-media'
 
 const CONTACTS = [
   { icon: Phone, label: 'Позвонить', value: '+996 (999) 202 299', href: 'tel:+996999202299' },
@@ -26,18 +24,14 @@ export function FinalCta() {
   return (
     <section id="contact" className="relative min-h-[520px] overflow-hidden md:min-h-[600px]">
       <img
-        src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80"
+        src={JORGO_EASTERN.jetiOguz}
         alt=""
         className="absolute inset-0 size-full object-cover"
         loading="lazy"
         aria-hidden="true"
       />
-      <YouTubeBackground
-        videoId={YOUTUBE_ID}
-        title="Горы Кыргызстана — фон секции контактов"
-      />
       <div
-        className="absolute inset-0 bg-gradient-to-br from-navy/90 via-navy/75 to-primary/50"
+        className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/55 to-black/30"
         aria-hidden="true"
       />
 

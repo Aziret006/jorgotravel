@@ -11,32 +11,27 @@ import {
 
 import { CountUp } from '@/components/jorgo/count-up'
 import { Reveal } from '@/components/jorgo/reveal'
-import { YouTubeEmbed } from '@/components/jorgo/youtube-embed'
+import { JORGO_EASTERN } from '@/lib/jorgo-media'
 import { cn } from '@/lib/utils'
-
-const YOUTUBE_ID = '6v2L2UGZJAM'
 
 const STATS = [
   {
     value: 10,
     suffix: '+',
     label: 'лет опыта в организации туров',
-    image:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.burana,
   },
   {
     value: 500,
     suffix: '+',
     label: 'довольных туристов',
-    image:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.kattama,
   },
   {
     value: 100,
     suffix: '%',
     label: 'авторские маршруты',
-    image:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.jetiOguz,
   },
 ]
 
@@ -45,43 +40,37 @@ const ADVANTAGES = [
     icon: BadgeCheck,
     title: 'Лицензированные гиды',
     description: 'Опытные проводники с сертификацией и знанием региона.',
-    image:
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.karakol,
   },
   {
     icon: Map,
     title: '100% авторские маршруты',
     description: 'Уникальные программы, которых нет у других туроператоров.',
-    image:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.semenovka2,
   },
   {
     icon: HeartHandshake,
     title: 'Индивидуальный подход',
     description: 'Подбираем тур под ваш уровень, интересы и бюджет.',
-    image:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.karkyra2,
   },
   {
     icon: ShieldCheck,
     title: 'Безопасность и страховка',
     description: 'Проверенное снаряжение и медицинская страховка в каждом туре.',
-    image:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.nebesnyMost,
   },
   {
     icon: Users,
     title: 'Небольшие группы',
     description: 'Камерные группы для комфорта и живого общения.',
-    image:
-      'https://images.unsplash.com/photo-1519641471654-76cebc7a3415?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.karakol2,
   },
   {
     icon: Sparkles,
     title: 'Эмоции и впечатления',
     description: 'Мы создаём моменты, которые останутся с вами навсегда.',
-    image:
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=800&q=80',
+    image: JORGO_EASTERN.skazka2,
   },
 ]
 
@@ -127,21 +116,29 @@ export function WhyChooseUs() {
           <div className="overflow-hidden rounded-3xl shadow-2xl">
             <div className="grid lg:grid-cols-5">
               <div className="relative aspect-video lg:col-span-3 lg:aspect-auto lg:min-h-[320px]">
-                <YouTubeEmbed
-                  videoId={YOUTUBE_ID}
-                  title="JorgoTravel — наши туры по Кыргызстану"
+                <img
+                  src={JORGO_EASTERN.skazka}
+                  alt="Каньон Сказка — тур JorgoTravel"
+                  className="size-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <div className="flex flex-col justify-center bg-navy px-8 py-10 lg:col-span-2 lg:px-10">
                 <p className="text-sm font-semibold uppercase tracking-widest text-accent">
-                  Видео о нас
+                  Наши туры
                 </p>
                 <h3 className="mt-2 font-heading text-2xl font-bold text-white md:text-3xl">
                   Посмотрите, как проходят наши туры
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/85 md:text-base">
-                  Горы, озёра и настоящие эмоции — в одном ролике от JorgoTravel.
+                  Фото с реального маршрута «Восточный тур» — 9 локаций за 3 дня.
                 </p>
+                <a
+                  href="/tours/vostochny-tour"
+                  className="mt-6 inline-flex w-fit items-center justify-center rounded-full bg-accent px-6 py-2.5 text-sm font-bold text-accent-foreground"
+                >
+                  Подробнее о туре
+                </a>
               </div>
             </div>
           </div>

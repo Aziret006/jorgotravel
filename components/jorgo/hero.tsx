@@ -1,42 +1,13 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { JORGO_HERO_SLIDES } from '@/lib/jorgo-media'
 import { ChevronDown, MapPin, Star } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
-import { HeroVideoBackground } from '@/components/jorgo/hero-video-background'
+const SLIDE_INTERVAL = 4000
 
-const SLIDE_INTERVAL = 3000
-
-const SLIDES = [
-  {
-    id: 'trekking',
-    video:
-      'https://videos.pexels.com/video-files/2680434/2680434-hd_1920_1080_25fps.mp4',
-    poster:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80',
-    title: 'Треккинг по Тянь-Шаню',
-    subtitle: 'Пешие маршруты к вершинам, ледникам и альпийским лугам',
-  },
-  {
-    id: 'lakes',
-    video:
-      'https://videos.pexels.com/video-files/3571264/3571264-hd_1920_1080_24fps.mp4',
-    poster:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80',
-    title: 'Озёра Кыргызстана',
-    subtitle: 'Иссык-Куль, Сон-Куль, Кёль-Суу — жемчужины Тянь-Шаня',
-  },
-  {
-    id: 'adventures',
-    video:
-      'https://videos.pexels.com/video-files/6963395/6963395-hd_1920_1080_25fps.mp4',
-    poster:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1920&q=80',
-    title: 'Наши приключения',
-    subtitle: 'Посмотрите, как проходят наши туры по Кыргызстану',
-  },
-]
+const SLIDES = JORGO_HERO_SLIDES
 
 export function Hero() {
   const [active, setActive] = useState(0)
@@ -70,11 +41,15 @@ export function Hero() {
         >
           {SLIDES.map((item, i) => (
             <div key={item.id} className="relative h-full w-full shrink-0">
-              <HeroVideoBackground
-                src={item.video}
-                poster={item.poster}
-                active={i === active}
-                priority={i === 0}
+              <img
+                src={item.image}
+                alt={item.alt}
+                className={cn(
+                  'absolute inset-0 size-full object-cover object-center',
+                  i === active && 'animate-ken-burns',
+                )}
+                fetchPriority={i === 0 ? 'high' : 'low'}
+                loading={i === 0 ? 'eager' : 'lazy'}
               />
             </div>
           ))}

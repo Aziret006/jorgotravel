@@ -1,3 +1,5 @@
+import { JORGO_EASTERN } from '@/lib/jorgo-media'
+
 export type MapDestination = {
   id: string
   name: string
@@ -44,11 +46,7 @@ export const MAP_DESTINATIONS: MapDestination[] = [
     lng: 77.25,
     description:
       'Второе по величине высокогорное озеро в мире — «кыргызское море» с пляжами и горами Тянь-Шаня.',
-    images: [
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-    ],
+    images: [JORGO_EASTERN.karkyra, JORGO_EASTERN.jetiOguz, JORGO_EASTERN.skazka],
   },
   {
     id: 'bishkek',
@@ -58,14 +56,7 @@ export const MAP_DESTINATIONS: MapDestination[] = [
     lng: 74.5698,
     description:
       'Столица Кыргызстана — отправная точка для туров в Ала-Арчу, на Иссык-Куль и по всей стране.',
-    images: [
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
-    ],
-  },
-  {
-    id: 'arslanbob',
+    images: [JORGO_EASTERN.burana, JORGO_EASTERN.nebesnyMost, JORGO_EASTERN.kattama],
     name: 'Арсланбоб',
     slug: 'silk-road',
     lat: 39.9436,
@@ -81,15 +72,12 @@ export const MAP_DESTINATIONS: MapDestination[] = [
   {
     id: 'karakol',
     name: 'Каракол',
+    slug: 'vostochny-tour',
     lat: 42.4907,
     lng: 78.3939,
     description:
       'Город у восточного берега Иссык-Куля — русская архитектура, базар и ворота к горным маршрутам.',
-    images: [
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
-    ],
+    images: [JORGO_EASTERN.karakol, JORGO_EASTERN.karakol2, JORGO_EASTERN.jetiOguz2],
   },
 ]
 

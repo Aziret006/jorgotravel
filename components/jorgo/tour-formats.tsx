@@ -3,10 +3,8 @@
 import { Compass, Footprints, Landmark, Mountain, Sparkles, Waves } from 'lucide-react'
 
 import { Reveal } from '@/components/jorgo/reveal'
-import { YouTubeEmbed } from '@/components/jorgo/youtube-embed'
+import { JORGO_EASTERN } from '@/lib/jorgo-media'
 import { cn } from '@/lib/utils'
-
-const YOUTUBE_ID = '6v2L2UGZJAM'
 
 const FORMATS = [
   {
@@ -14,8 +12,7 @@ const FORMATS = [
     title: 'Горные и треккинг-туры',
     description: 'Пешие маршруты по хребтам Тянь-Шаня для любого уровня подготовки.',
     tagline: 'Вершины, которые запомнятся навсегда',
-    image:
-      'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.semenovka,
     accent: 'primary' as const,
   },
   {
@@ -23,8 +20,7 @@ const FORMATS = [
     title: 'Туры к озёрам',
     description: 'Иссык-Куль, Сон-Куль, Кёль-Суу и другие жемчужины страны.',
     tagline: 'Кристальная вода и горные панорамы',
-    image:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.karkyra,
     accent: 'accent' as const,
   },
   {
@@ -32,8 +28,7 @@ const FORMATS = [
     title: 'Джип-туры и экспедиции',
     description: 'Внедорожные приключения к самым труднодоступным локациям.',
     tagline: 'Туда, куда не доедет обычный автомобиль',
-    image:
-      'https://images.unsplash.com/photo-1519641471654-76cebc7a3415?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.nebesnyMost,
     accent: 'primary' as const,
   },
   {
@@ -41,8 +36,7 @@ const FORMATS = [
     title: 'Конные туры',
     description: 'Кочевые маршруты верхом по традициям кыргызских наездников.',
     tagline: 'Юрты, степи и свобода кочевой жизни',
-    image:
-      'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.kattama,
     accent: 'accent' as const,
   },
   {
@@ -50,8 +44,7 @@ const FORMATS = [
     title: 'Культурно-исторические маршруты',
     description: 'Великий Шёлковый путь, петроглифы и живые традиции народа.',
     tagline: 'История, которую можно потрогать',
-    image:
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.burana,
     accent: 'primary' as const,
   },
   {
@@ -59,8 +52,7 @@ const FORMATS = [
     title: 'Индивидуальные авторские туры',
     description: 'Маршрут, собранный под ваши интересы, темп и бюджет.',
     tagline: 'Ваше путешествие — ваши правила',
-    image:
-      'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=80',
+    image: JORGO_EASTERN.skazka,
     accent: 'accent' as const,
   },
 ]
@@ -90,9 +82,11 @@ function FormatCard({
         {featured ? (
           <>
             <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-navy">
-              <YouTubeEmbed
-                videoId={YOUTUBE_ID}
-                title="Видео о горных турах JorgoTravel"
+              <img
+                src={JORGO_EASTERN.jetiOguz}
+                alt="Восточный тур JorgoTravel"
+                className="size-full object-cover"
+                loading="lazy"
               />
             </div>
             <div className="relative flex flex-1 flex-col bg-navy p-6 md:p-8">
