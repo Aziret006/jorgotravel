@@ -1,11 +1,13 @@
 'use client'
 
+import { fetchReviews, type Review } from '@/lib/api'
+import { useApiData } from '@/lib/use-api-data'
 import { cn } from '@/lib/utils'
 import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { Reveal } from './reveal'
 
-const REVIEWS = [
+const FALLBACK_REVIEWS: Omit<Review, 'id' | 'tour'>[] = [
   {
     name: 'Анна Ковалёва',
     date: 'Август 2025',
@@ -37,11 +39,18 @@ const REVIEWS = [
 ]
 
 export function Reviews() {
+  const reviews = useApiData<Omit<Review, 'id' | 'tour'>[]>(fetchReviews, FALLBACK_REVIEWS)
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
 
-  const next = useCallback(() => setIndex((i) => (i + 1) % REVIEWS.length), [])
-  const prev = () => setIndex((i) => (i - 1 + REVIEWS.length) % REVIEWS.length)
+  const count = reviews.length
+  const next = useCallback(() => setIndex((i) => (i + 1) % count), [count])
+  const prev = () => setIndex((i) => (i - 1 + count) % count)
+
+  // Если после загрузки отзывов из API их стало меньше — не выходим за границы
+  useEffect(() => {
+    if (index >= count) setIndex(0)
+  }, [count, index])
 
   useEffect(() => {
     if (paused) return
@@ -75,11 +84,11 @@ export function Reviews() {
                 className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${index * 100}%)` }}
               >
-                {REVIEWS.map((review) => (
+                {reviews.map((review) => (
                   <article
                     key={review.name}
                     className="w-full shrink-0 px-1"
-                    aria-hidden={REVIEWS[index].name !== review.name}
+                    aria-hidden={reviews[index]?.name !== review.name}
                   >
                     <div className="mx-1 rounded-3xl border border-border bg-card p-8 shadow-sm md:p-10">
                       <Quote className="size-10 text-primary/25" aria-hidden="true" />
@@ -136,7 +145,7 @@ export function Reviews() {
 
           {/* Dots */}
           <div className="mt-6 flex justify-center gap-2">
-            {REVIEWS.map((review, i) => (
+            {reviews.map((review, i) => (
               <button
                 key={review.name}
                 type="button"

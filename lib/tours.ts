@@ -1,4 +1,6 @@
-import { JORGO_EASTERN, JORGO_TOUR_GALLERY } from '@/lib/jorgo-media'
+import { JORGO_EASTERN, JORGO_TOUR_GALLERY, jorgoMedia } from '@/lib/jorgo-media'
+
+const productVideo = (file: string) => jorgoMedia('products', file)
 
 export type TourDay = {
   day: number
@@ -15,6 +17,8 @@ export type Tour = {
   price: string
   priceNote?: string
   image: string
+  /** Видео локации для превью карточки (проигрывается при наведении) */
+  video?: string
   alt: string
   gallery: string[]
   description: string
@@ -37,6 +41,7 @@ export const TOURS: Tour[] = [
     durationDays: 3,
     price: 'от 28 500 сом',
     image: JORGO_EASTERN.jetiOguz,
+    video: productVideo('Жети-огуз (4).mp4'),
     alt: 'Скалы Джетти-Огуз на восточном берегу Иссык-Куля',
     gallery: JORGO_TOUR_GALLERY,
     description:
@@ -89,6 +94,7 @@ export const TOURS: Tour[] = [
     price: 'от 24 900 сом',
     image:
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('Каркыра 2 (4).mp4'),
     alt: 'Высокогорное озеро Сон-Куль с юртами на берегу',
     gallery: [
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
@@ -159,6 +165,7 @@ export const TOURS: Tour[] = [
     price: 'от 38 500 сом',
     image:
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('Сказка (4).mp4'),
     alt: 'Бирюзовое озеро Кёль-Суу среди скал',
     gallery: [
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
@@ -230,6 +237,7 @@ export const TOURS: Tour[] = [
     price: 'от 18 200 сом',
     image:
       'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('ущелье 2 (4).mp4'),
     alt: 'Тропа треккинга в горах Ала-Арча',
     gallery: [
       'https://images.unsplash.com/photo-1551524164-6cf77f5f7f8b?auto=format&fit=crop&w=800&q=80',
@@ -290,6 +298,7 @@ export const TOURS: Tour[] = [
     price: 'от 32 000 сом',
     image:
       'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('Гавайи (4).mp4'),
     alt: 'Пляж и горы у озера Иссык-Куль',
     gallery: [
       'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80',
@@ -341,6 +350,7 @@ export const TOURS: Tour[] = [
     price: 'от 12 900 сом',
     image:
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('ущелье 1 (4).mp4'),
     alt: 'Водопад в национальном парке Ала-Арча',
     gallery: [
       'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
@@ -397,6 +407,7 @@ export const TOURS: Tour[] = [
     priceNote: 'Стоимость рассчитывается индивидуально',
     image:
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1600&q=80',
+    video: productVideo('Каракол мечеть (4).mp4'),
     alt: 'Древний город Ош на Великом Шёлковом пути',
     gallery: [
       'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',

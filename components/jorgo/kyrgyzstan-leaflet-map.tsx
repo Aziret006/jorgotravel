@@ -13,14 +13,41 @@ import {
 type KyrgyzstanLeafletMapProps = {
   activeId: string
   onSelect: (id: string) => void
+  destinations?: MapDestination[]
 }
 
-export function KyrgyzstanLeafletMap({ activeId, onSelect }: KyrgyzstanLeafletMapProps) {
+export function KyrgyzstanLeafletMap({
+  activeId,
+  onSelect,
+  destinations = MAP_DESTINATIONS,
+}: KyrgyzstanLeafletMapProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<LeafletMap | null>(null)
   const markersRef = useRef<Map<string, Marker>>(new Map())
   const onSelectRef = useRef(onSelect)
   onSelectRef.current = onSelect
+  const destinationsRef = useRef(destinations)
+  destinationsRef.current = destinations
+
+  const activeIdRef = useRef(activeId)
+  activeIdRef.current = activeId
+
+  const syncMarkers = (
+    L: typeof import('leaflet'),
+    map: LeafletMap,
+    dests: MapDestination[],
+  ) => {
+    markersRef.current.forEach((marker) => marker.remove())
+    markersRef.current.clear()
+    dests.forEach((dest) => {
+      const marker = L.marker([dest.lat, dest.lng], {
+        icon: createMarkerIcon(L, dest, dest.id === activeIdRef.current),
+      })
+      marker.on('click', () => onSelectRef.current(dest.id))
+      marker.addTo(map)
+      markersRef.current.set(dest.id, marker)
+    })
+  }
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
@@ -54,14 +81,7 @@ export function KyrgyzstanLeafletMap({ activeId, onSelect }: KyrgyzstanLeafletMa
         { maxZoom: 18, opacity: 0.6 },
       ).addTo(map)
 
-      MAP_DESTINATIONS.forEach((dest) => {
-        const marker = L.marker([dest.lat, dest.lng], {
-          icon: createMarkerIcon(L, dest, dest.id === activeId),
-        })
-        marker.on('click', () => onSelectRef.current(dest.id))
-        marker.addTo(map)
-        markersRef.current.set(dest.id, marker)
-      })
+      syncMarkers(L, map, destinationsRef.current)
 
       map.fitBounds(KG_BOUNDS, { padding: [20, 20] })
       mapRef.current = map
@@ -76,14 +96,23 @@ export function KyrgyzstanLeafletMap({ activeId, onSelect }: KyrgyzstanLeafletMa
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Пересоздаём маркеры, когда приходят данные из API
+  useEffect(() => {
+    if (!mapRef.current) return
+    void import('leaflet').then((L) => {
+      if (mapRef.current) syncMarkers(L, mapRef.current, destinations)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destinations])
+
   useEffect(() => {
     const map = mapRef.current
-    const dest = MAP_DESTINATIONS.find((d) => d.id === activeId)
+    const dest = destinationsRef.current.find((d) => d.id === activeId)
     if (!map || !dest) return
 
     void import('leaflet').then((L) => {
       markersRef.current.forEach((marker, id) => {
-        const d = MAP_DESTINATIONS.find((x) => x.id === id)
+        const d = destinationsRef.current.find((x) => x.id === id)
         if (!d) return
         marker.setIcon(createMarkerIcon(L, d, id === activeId))
       })

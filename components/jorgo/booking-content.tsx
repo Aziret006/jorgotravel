@@ -14,6 +14,8 @@ import {
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 
+import { createBooking, fetchTours, type TourCard } from '@/lib/api'
+import { useApiData } from '@/lib/use-api-data'
 import { BookingCalendar, formatBookingDate } from '@/components/jorgo/booking-calendar'
 import { GoogleBookingCalendar } from '@/components/jorgo/google-booking-calendar'
 import { Reveal } from '@/components/jorgo/reveal'
@@ -23,6 +25,7 @@ import { TOURS } from '@/lib/tours'
 import { cn } from '@/lib/utils'
 
 export function BookingContent() {
+  const tours = useApiData<TourCard[]>(fetchTours, TOURS)
   const searchParams = useSearchParams()
   const initialTour = searchParams.get('tour') ?? ''
 
@@ -34,6 +37,8 @@ export function BookingContent() {
   const [email, setEmail] = useState('')
   const [note, setNote] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
 
   const minDateStr = useMemo(() => {
@@ -58,8 +63,8 @@ export function BookingContent() {
   }
 
   const selectedTour = useMemo(
-    () => TOURS.find((t) => t.slug === tourSlug),
-    [tourSlug],
+    () => tours.find((t) => t.slug === tourSlug),
+    [tours, tourSlug],
   )
 
   const validate = () => {
@@ -75,27 +80,32 @@ export function BookingContent() {
     return Object.keys(next).length === 0
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validate()) return
+    if (!validate() || !date) return
 
-    const tourTitle = selectedTour?.title ?? tourSlug
-    const dateStr = date ? formatBookingDate(date) : ''
-    const body = [
-      `Тур: ${tourTitle}`,
-      `Дата начала: ${dateStr}`,
-      `Количество человек: ${guests}`,
-      `Имя: ${name}`,
-      `Телефон: ${phone}`,
-      email ? `Email: ${email}` : '',
-      note ? `Комментарий: ${note}` : '',
-    ]
-      .filter(Boolean)
-      .join('\n')
+    const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
-    const mailto = `mailto:jorgo.travel.kg@gmail.com?subject=${encodeURIComponent(`Бронирование: ${tourTitle}`)}&body=${encodeURIComponent(body)}`
-    window.location.href = mailto
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError('')
+    try {
+      await createBooking({
+        tour: tourSlug,
+        date: dateStr,
+        guests,
+        name: name.trim(),
+        phone: phone.trim(),
+        email: email.trim() || undefined,
+        note: note.trim() || undefined,
+      })
+      setSubmitted(true)
+    } catch {
+      setSubmitError(
+        'Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь с нами по WhatsApp.',
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) {
@@ -166,7 +176,7 @@ export function BookingContent() {
                     1. Выберите тур
                   </legend>
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {TOURS.map((tour) => (
+                    {tours.map((tour) => (
                       <label
                         key={tour.slug}
                         className={cn(
@@ -354,12 +364,19 @@ export function BookingContent() {
                   </div>
                 </fieldset>
 
+                {submitError && (
+                  <p className="rounded-xl bg-destructive/10 p-3 text-sm text-destructive">
+                    {submitError}
+                  </p>
+                )}
+
                 <button
                   type="submit"
-                  className="animate-pulse-glow inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-bold text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-[1.02] sm:w-auto"
+                  disabled={submitting}
+                  className="animate-pulse-glow inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 text-base font-bold text-accent-foreground shadow-lg transition-transform duration-300 hover:scale-[1.02] disabled:pointer-events-none disabled:opacity-60 sm:w-auto"
                 >
                   <Send className="size-5" aria-hidden="true" />
-                  Отправить заявку
+                  {submitting ? 'Отправляем...' : 'Отправить заявку'}
                 </button>
               </form>
             </Reveal>

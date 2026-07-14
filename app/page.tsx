@@ -2,6 +2,7 @@ import { FinalCta } from '@/components/jorgo/final-cta'
 import { Hero } from '@/components/jorgo/hero'
 import { HowWeWork } from '@/components/jorgo/how-we-work'
 import { PopularTours } from '@/components/jorgo/popular-tours'
+import { ProductsShowcase } from '@/components/jorgo/products-showcase'
 import { Reviews } from '@/components/jorgo/reviews'
 import { SiteFooter } from '@/components/jorgo/site-footer'
 import { SiteHeader } from '@/components/jorgo/site-header'
@@ -21,6 +22,7 @@ export default function Page() {
         <WhyChooseUs />
         <PopularTours />
         <TourMap />
+        <ProductsShowcase />
         <VideoGallery />
         <Reviews />
         <HowWeWork />

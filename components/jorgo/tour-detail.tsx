@@ -39,12 +39,26 @@ export function TourDetail({ tour }: TourDetailProps) {
       <main>
         {/* Hero */}
         <section className="relative min-h-[55vh] overflow-hidden pt-20 md:min-h-[65vh] md:pt-24">
-          <img
-            src={tour.image}
-            alt={tour.alt}
-            className="absolute inset-0 size-full object-cover"
-            fetchPriority="high"
-          />
+          {tour.video ? (
+            <video
+              src={tour.video}
+              poster={tour.image}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-label={tour.alt}
+              className="absolute inset-0 size-full object-cover"
+            />
+          ) : (
+            <img
+              src={tour.image}
+              alt={tour.alt}
+              className="absolute inset-0 size-full object-cover"
+              fetchPriority="high"
+            />
+          )}
           <div
             className="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-navy/30"
             aria-hidden="true"

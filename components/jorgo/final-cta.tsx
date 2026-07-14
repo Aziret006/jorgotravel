@@ -1,16 +1,17 @@
 import { Mail, MessageCircle, Phone, Send } from 'lucide-react'
 
 import { Reveal } from '@/components/jorgo/reveal'
+import { SOCIAL_URLS } from '@/components/jorgo/social-links'
 import { JORGO_EASTERN } from '@/lib/jorgo-media'
 
 const CONTACTS = [
   { icon: Phone, label: 'Позвонить', value: '+996 (999) 202 299', href: 'tel:+996999202299' },
-  { icon: Send, label: 'Telegram', value: '@jorgotravel', href: 'https://t.me/jorgotravel' },
+  { icon: Send, label: 'Telegram', value: '@jorgo_travel', href: SOCIAL_URLS.telegram },
   {
     icon: MessageCircle,
     label: 'WhatsApp',
     value: '+996 (999) 202 299',
-    href: 'https://wa.me/996999202299',
+    href: SOCIAL_URLS.whatsapp,
   },
   {
     icon: Mail,

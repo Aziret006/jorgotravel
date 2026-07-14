@@ -2,15 +2,18 @@
 
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
-import { ArrowRight, MapPin } from 'lucide-react'
+import { ArrowRight, MapPin, Play } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import { HoverVideo } from '@/components/jorgo/hover-video'
 import { Reveal } from '@/components/jorgo/reveal'
+import { fetchDestinations } from '@/lib/api'
 import {
   DEFAULT_DESTINATION_ID,
   MAP_DESTINATIONS,
   type MapDestination,
 } from '@/lib/map-destinations'
+import { useApiData } from '@/lib/use-api-data'
 import { cn } from '@/lib/utils'
 
 const KyrgyzstanLeafletMap = dynamic(
@@ -29,9 +32,10 @@ const KyrgyzstanLeafletMap = dynamic(
 )
 
 export function TourMap() {
+  const destinations = useApiData<MapDestination[]>(fetchDestinations, MAP_DESTINATIONS)
   const [activeId, setActiveId] = useState(DEFAULT_DESTINATION_ID)
   const active =
-    MAP_DESTINATIONS.find((d) => d.id === activeId) ?? MAP_DESTINATIONS[0]
+    destinations.find((d) => d.id === activeId) ?? destinations[0]
 
   return (
     <section id="map" className="bg-secondary py-20 md:py-28">
@@ -52,10 +56,14 @@ export function TourMap() {
         <Reveal className="mt-14">
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
             <div className="overflow-hidden rounded-3xl border border-border bg-card p-3 shadow-lg md:p-4">
-              <KyrgyzstanLeafletMap activeId={activeId} onSelect={setActiveId} />
+              <KyrgyzstanLeafletMap
+                activeId={activeId}
+                onSelect={setActiveId}
+                destinations={destinations}
+              />
 
               <div className="mt-4 flex flex-wrap gap-2">
-                {MAP_DESTINATIONS.map((dest) => (
+                {destinations.map((dest) => (
                   <button
                     key={dest.id}
                     type="button"
@@ -82,15 +90,25 @@ export function TourMap() {
 }
 
 function DestinationPanel({ destination }: { destination: MapDestination }) {
-  const [imageIndex, setImageIndex] = useState(0)
+  // Индекс -1 — видео локации, 0+ — фотографии
+  const hasVideo = Boolean(destination.video)
+  const [mediaIndex, setMediaIndex] = useState(hasVideo ? -1 : 0)
 
   useEffect(() => {
-    setImageIndex(0)
-  }, [destination.id])
+    setMediaIndex(destination.video ? -1 : 0)
+  }, [destination.id, destination.video])
 
   return (
     <div className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-lg animate-in fade-in duration-500">
       <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+        {hasVideo && mediaIndex === -1 && (
+          <HoverVideo
+            key={destination.id}
+            src={destination.video!}
+            label={`${destination.name} — видео`}
+            className="absolute inset-0"
+          />
+        )}
         {destination.images.map((src, i) => (
           <img
             key={src}
@@ -98,13 +116,15 @@ function DestinationPanel({ destination }: { destination: MapDestination }) {
             alt={`${destination.name} — фото ${i + 1}`}
             className={cn(
               'absolute inset-0 size-full object-cover transition-all duration-700',
-              i === imageIndex ? 'scale-100 opacity-100' : 'scale-105 opacity-0',
+              i === mediaIndex
+                ? 'scale-100 opacity-100'
+                : 'pointer-events-none scale-105 opacity-0',
             )}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-transparent" />
 
-        <div className="absolute bottom-4 left-4">
+        <div className="pointer-events-none absolute bottom-4 left-4">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-bold text-accent-foreground shadow">
             <MapPin className="size-3.5" aria-hidden="true" />
             {destination.name}
@@ -112,15 +132,26 @@ function DestinationPanel({ destination }: { destination: MapDestination }) {
         </div>
 
         <div className="absolute bottom-4 right-4 flex gap-1.5">
+          {hasVideo && (
+            <button
+              type="button"
+              aria-label="Видео"
+              onClick={() => setMediaIndex(-1)}
+              className={cn(
+                'size-2.5 rounded-full transition-all duration-300',
+                mediaIndex === -1 ? 'w-6 bg-accent' : 'bg-white/50 hover:bg-white/80',
+              )}
+            />
+          )}
           {destination.images.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`Фото ${i + 1}`}
-              onClick={() => setImageIndex(i)}
+              onClick={() => setMediaIndex(i)}
               className={cn(
                 'size-2.5 rounded-full transition-all duration-300',
-                i === imageIndex ? 'w-6 bg-white' : 'bg-white/50 hover:bg-white/80',
+                i === mediaIndex ? 'w-6 bg-white' : 'bg-white/50 hover:bg-white/80',
               )}
             />
           ))}
@@ -135,15 +166,42 @@ function DestinationPanel({ destination }: { destination: MapDestination }) {
           {destination.description}
         </p>
 
-        <div className="mt-5 grid grid-cols-3 gap-2">
+        <div className="mt-5 grid grid-cols-4 gap-2">
+          {hasVideo && (
+            <button
+              type="button"
+              onClick={() => setMediaIndex(-1)}
+              className={cn(
+                'relative overflow-hidden rounded-xl border-2 transition-all duration-300',
+                mediaIndex === -1
+                  ? 'border-accent shadow-md'
+                  : 'border-transparent opacity-70 hover:opacity-100',
+              )}
+            >
+              <video
+                src={destination.video}
+                muted
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+                className="aspect-[4/3] w-full object-cover"
+                onLoadedMetadata={(e) => {
+                  e.currentTarget.currentTime = 2
+                }}
+              />
+              <span className="absolute inset-0 flex items-center justify-center bg-black/25">
+                <Play className="size-5 fill-white text-white" aria-hidden="true" />
+              </span>
+            </button>
+          )}
           {destination.images.map((src, i) => (
             <button
               key={src}
               type="button"
-              onClick={() => setImageIndex(i)}
+              onClick={() => setMediaIndex(i)}
               className={cn(
                 'overflow-hidden rounded-xl border-2 transition-all duration-300',
-                i === imageIndex
+                i === mediaIndex
                   ? 'border-accent shadow-md'
                   : 'border-transparent opacity-70 hover:opacity-100',
               )}

@@ -1,11 +1,12 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { HeroVideoBackground } from '@/components/jorgo/hero-video-background'
 import { JORGO_HERO_SLIDES } from '@/lib/jorgo-media'
 import { ArrowRight, ChevronDown, MapPin, Star, Users, Award } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 
-const SLIDE_INTERVAL = 4000
+const SLIDE_INTERVAL = 8000
 
 const SLIDES = JORGO_HERO_SLIDES
 
@@ -51,15 +52,11 @@ export function Hero() {
             )}
             aria-hidden={i !== active}
           >
-            <img
-              src={item.image}
-              alt={item.alt}
-              className={cn(
-                'size-full object-cover object-center',
-                i === active && 'animate-ken-burns',
-              )}
-              fetchPriority={i === 0 ? 'high' : 'low'}
-              loading={i === 0 ? 'eager' : 'lazy'}
+            <HeroVideoBackground
+              src={item.video}
+              poster={item.image}
+              active={i === active}
+              priority={i === 0}
             />
           </div>
         ))}

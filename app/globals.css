@@ -209,7 +209,7 @@
   }
 
   .hero-slide-progress {
-    animation: hero-slide-progress 4s linear forwards;
+    animation: hero-slide-progress 8s linear forwards;
   }
 
   .hero-slide-progress.paused {

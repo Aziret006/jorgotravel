@@ -5,21 +5,7 @@ import Link from 'next/link'
 
 import { useI18n } from '@/components/jorgo/i18n-provider'
 import { LanguageSwitcher } from '@/components/jorgo/language-switcher'
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TiktokIcon,
-  WhatsappIcon,
-} from '@/components/jorgo/social-icons'
-import { Send } from 'lucide-react'
-
-const SOCIALS = [
-  { icon: InstagramIcon, label: 'Instagram', href: '#' },
-  { icon: FacebookIcon, label: 'Facebook', href: '#' },
-  { icon: WhatsappIcon, label: 'WhatsApp', href: 'https://wa.me/996999202299' },
-  { icon: Send, label: 'Telegram', href: 'https://t.me/jorgotravel' },
-  { icon: TiktokIcon, label: 'TikTok', href: '#' },
-]
+import { FOOTER_SOCIALS } from '@/components/jorgo/social-links'
 
 export function SiteFooter() {
   const { t } = useI18n()
@@ -89,7 +75,7 @@ export function SiteFooter() {
               <li>Улица Карасаева, 7, Бишкек, Кыргызстан</li>
             </ul>
             <div className="mt-5 flex gap-3">
-              {SOCIALS.map((social) => {
+              {FOOTER_SOCIALS.map((social) => {
                 const Icon = social.icon
                 return (
                   <a

@@ -35,34 +35,86 @@ export const JORGO_GALLERY = [
   { image: JORGO_EASTERN.skazka, caption: 'Каньон Сказка' },
 ]
 
-export const JORGO_HERO_SLIDES = [
+const productVideo = (file: string) => jorgoMedia('products', file)
+
+/** Видео всех локаций из public/jorgo-video/products. */
+export const JORGO_PRODUCT_VIDEOS = [
+  { id: 'skazka', title: 'Каньон Сказка', src: productVideo('Сказка (4).mp4') },
+  { id: 'jeti-oguz', title: 'Джети-Огуз', src: productVideo('Жети-огуз (4).mp4') },
+  { id: 'karkyra', title: 'Долина Каркыра', src: productVideo('Каркыра 2 (4).mp4') },
   {
-    id: 'bridge',
-    image: JORGO_EASTERN.nebesnyMost,
-    alt: 'Небесный мост — Восточный тур JorgoTravel',
-    title: 'Восточный тур',
-    subtitle: '9 локаций за 3 дня — от Небесного моста до Каньона Сказка',
+    id: 'uyulgan-tash',
+    title: 'Уйулган-Таш (Каркыра)',
+    src: productVideo('Уйулган таш Каркыра (4).mp4'),
   },
   {
-    id: 'burana',
-    image: JORGO_EASTERN.burana,
-    alt: 'Башня Бурана — исторический маршрут',
-    title: 'История и культура',
-    subtitle: 'Башня Бурана, национальная кухня и живые традиции',
+    id: 'karakol-ski',
+    title: 'Горнолыжная база «Каракол»',
+    src: productVideo('Горнолыжный  Каракол (4).mp4'),
+  },
+  {
+    id: 'karakol-mosque',
+    title: 'Дунганская мечеть (Каракол)',
+    src: productVideo('Каракол мечеть (4).mp4'),
+  },
+  {
+    id: 'karakol-church',
+    title: 'Свято-Троицкий собор (Каракол)',
+    src: productVideo('Каракол церковь (4).mp4'),
+  },
+  { id: 'rukh-ordo', title: 'Рух Ордо', src: productVideo('Рух Ордо (4).mp4') },
+  { id: 'hawaii', title: 'Пляж «Гавайи»', src: productVideo('Гавайи (4).mp4') },
+  {
+    id: 'hot-spring-1',
+    title: 'Горячие источники',
+    src: productVideo('Горячий источник 1 (4).mp4'),
+  },
+  {
+    id: 'hot-spring-orukty',
+    title: 'Горячий источник Орукту',
+    src: productVideo('Горячий источник орукту (4).mp4'),
+  },
+  { id: 'hippodrome', title: 'Ипподром', src: productVideo('ипподром (4).mp4') },
+  { id: 'ferris-wheel', title: 'Колесо обозрения', src: productVideo('Колесо (4).mp4') },
+  { id: 'square', title: 'Центральная площадь', src: productVideo('Площадь (4).mp4') },
+  { id: 'kemin-2', title: 'Кемин', src: productVideo('кемин 22mp4 (4).mp4') },
+  { id: 'kemin-3', title: 'Кеминская долина', src: productVideo('кемин 3 (4).mp4') },
+  { id: 'gorge-1', title: 'Горное ущелье', src: productVideo('ущелье 1 (4).mp4') },
+  { id: 'gorge-2', title: 'Живописное ущелье', src: productVideo('ущелье 2 (4).mp4') },
+] as const
+
+export const JORGO_HERO_SLIDES = [
+  {
+    id: 'karkyra',
+    image: JORGO_EASTERN.karkyra,
+    video: productVideo('Каркыра 2 (4).mp4'),
+    alt: 'Долина Каркыра — альпийские луга',
+    title: 'Долина Каркыра',
+    subtitle: 'Бескрайние альпийские луга на востоке Кыргызстана',
   },
   {
     id: 'jeti-oguz',
     image: JORGO_EASTERN.jetiOguz,
+    video: productVideo('Жети-огуз (4).mp4'),
     alt: 'Скалы Джетти-Огуз у Иссык-Куля',
-    title: 'Иссык-Куль и восток',
-    subtitle: 'Джетти-Огуз, Каркыра и панорамы Каракола',
+    title: 'Восточный тур',
+    subtitle: '9 локаций за 3 дня — от Небесного моста до Каньона Сказка',
   },
   {
     id: 'skazka',
     image: JORGO_EASTERN.skazka,
+    video: productVideo('Сказка (4).mp4'),
     alt: 'Каньон Сказка — жемчужина восточного берега',
-    title: 'Наши приключения',
-    subtitle: 'Реальные моменты из туров JorgoTravel по Кыргызстану',
+    title: 'Каньон Сказка',
+    subtitle: 'Марсианские пейзажи на южном берегу Иссык-Куля',
+  },
+  {
+    id: 'karakol',
+    image: JORGO_EASTERN.karakol,
+    video: productVideo('Горнолыжный  Каракол (4).mp4'),
+    alt: 'Горнолыжная база Каракол',
+    title: 'Горнолыжный Каракол',
+    subtitle: 'Снежные склоны и панорамы хребта Терскей Ала-Тоо',
   },
 ]
 
